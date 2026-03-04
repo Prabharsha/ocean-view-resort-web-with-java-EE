@@ -15,5 +15,6 @@ public interface UserDAO {
     List<User> findByRole(String role) throws DAOException;
     void delete(String id) throws DAOException;
     void updatePassword(String userId, String hashedPassword) throws DAOException;
+    void toggleActive(String userId) throws DAOException;
 }
 

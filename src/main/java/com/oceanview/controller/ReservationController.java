@@ -213,6 +213,7 @@ public class ReservationController extends HttpServlet {
         if (result.isSuccess()) {
             log.info("Reservation created successfully: {} by user={}", result.getMessage(), user.getUsername());
             req.getSession().setAttribute("flashSuccess", result.getMessage());
+            req.getSession().setAttribute("emailNotice", "Booking confirmation email sent to guest");
             resp.sendRedirect(req.getContextPath() + "/reservations?action=list");
         } else {
             log.warn("Reservation creation failed: {} (guestId={} roomId={} by user={})",

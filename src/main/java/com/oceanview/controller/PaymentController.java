@@ -123,6 +123,7 @@ public class PaymentController extends HttpServlet {
             Payment payment = (Payment) result.getData();
             log.info("Payment processed successfully: id={} amount={} reservationId={}", payment.getId(), payment.getAmount(), reservationId);
             req.getSession().setAttribute("flashSuccess", result.getMessage());
+            req.getSession().setAttribute("emailNotice", "Payment receipt email sent to guest");
             resp.sendRedirect(req.getContextPath() + "/payments?action=receipt&id=" + payment.getId());
         } else {
             log.warn("Payment processing failed for reservationId='{}': {}", reservationId, result.getMessage());
