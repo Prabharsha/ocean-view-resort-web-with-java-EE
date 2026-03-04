@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +9,14 @@
     <title>Edit Room — Ocean View Resort</title>
     <link rel="stylesheet" href="${ctx}/public/css/main.css">
     <link rel="stylesheet" href="${ctx}/public/css/dashboard.css">
+    <style>
+        .amenity-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 4px; }
+        .amenity-check { display: none; }
+        .amenity-label { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-muted); background: #fff; transition: all 0.18s ease; user-select: none; }
+        .amenity-label .amenity-icon { font-size: 17px; }
+        .amenity-check:checked + .amenity-label { border-color: #2e86ab; background: #eaf4fb; color: #1a6080; font-weight: 600; }
+        .amenity-label:hover { border-color: #2e86ab; color: #2e86ab; }
+    </style>
 </head>
 <body>
 <div class="app-layout">
@@ -29,9 +38,9 @@
                     <div class="form-group">
                         <label for="roomType" class="form-label">Room Type *</label>
                         <select id="roomType" name="roomType" class="form-select" required>
-                            <option value="STANDARD" ${room.roomType == 'STANDARD' ? 'selected' : ''}>Standard</option>
-                            <option value="DELUXE" ${room.roomType == 'DELUXE' ? 'selected' : ''}>Deluxe</option>
-                            <option value="SUITE" ${room.roomType == 'SUITE' ? 'selected' : ''}>Suite</option>
+                            <option value="STANDARD"  ${room.roomType == 'STANDARD'  ? 'selected' : ''}>Standard</option>
+                            <option value="DELUXE"    ${room.roomType == 'DELUXE'    ? 'selected' : ''}>Deluxe</option>
+                            <option value="SUITE"     ${room.roomType == 'SUITE'     ? 'selected' : ''}>Suite</option>
                             <option value="PENTHOUSE" ${room.roomType == 'PENTHOUSE' ? 'selected' : ''}>Penthouse</option>
                         </select>
                     </div>
@@ -55,12 +64,34 @@
                         </label>
                     </div>
                     <div class="form-group form-group--full">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea id="description" name="description" class="form-control" rows="3">${room.description}</textarea>
+                        <label class="form-label">Amenities</label>
+                        <div class="amenity-grid">
+                            <c:set var="cur" value="${not empty room.amenities ? room.amenities : ''}" />
+                            <input type="checkbox" id="am_wifi"    name="amenities" value="Wi-Fi"    class="amenity-check" ${fn:contains(cur,'Wi-Fi')    ? 'checked' : ''}>
+                            <label for="am_wifi"    class="amenity-label"><span class="amenity-icon">&#128246;</span> Wi-Fi</label>
+
+                            <input type="checkbox" id="am_tv"      name="amenities" value="Smart TV" class="amenity-check" ${fn:contains(cur,'Smart TV') ? 'checked' : ''}>
+                            <label for="am_tv"      class="amenity-label"><span class="amenity-icon">&#128250;</span> Smart TV</label>
+
+                            <input type="checkbox" id="am_ac"      name="amenities" value="AC"       class="amenity-check" ${fn:contains(cur,'AC')       ? 'checked' : ''}>
+                            <label for="am_ac"      class="amenity-label"><span class="amenity-icon">&#10052;</span> AC</label>
+
+                            <input type="checkbox" id="am_phone"   name="amenities" value="Phone"    class="amenity-check" ${fn:contains(cur,'Phone')    ? 'checked' : ''}>
+                            <label for="am_phone"   class="amenity-label"><span class="amenity-icon">&#128222;</span> Phone</label>
+
+                            <input type="checkbox" id="am_kettle"  name="amenities" value="Kettle"   class="amenity-check" ${fn:contains(cur,'Kettle')   ? 'checked' : ''}>
+                            <label for="am_kettle"  class="amenity-label"><span class="amenity-icon">&#9749;</span> Kettle</label>
+
+                            <input type="checkbox" id="am_minibar" name="amenities" value="Mini Bar" class="amenity-check" ${fn:contains(cur,'Mini Bar') ? 'checked' : ''}>
+                            <label for="am_minibar" class="amenity-label"><span class="amenity-icon">&#127863;</span> Mini Bar</label>
+
+                            <input type="checkbox" id="am_balcony" name="amenities" value="Balcony"  class="amenity-check" ${fn:contains(cur,'Balcony')  ? 'checked' : ''}>
+                            <label for="am_balcony" class="amenity-label"><span class="amenity-icon">&#127774;</span> Balcony</label>
+                        </div>
                     </div>
                     <div class="form-group form-group--full">
-                        <label for="amenities" class="form-label">Amenities (JSON)</label>
-                        <textarea id="amenities" name="amenities" class="form-control" rows="2">${room.amenities}</textarea>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="3">${room.description}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="imageUrl" class="form-label">Image URL</label>

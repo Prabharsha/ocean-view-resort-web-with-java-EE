@@ -146,7 +146,8 @@ public class RoomController extends HttpServlet {
         room.setCapacity(parseInt(req.getParameter("capacity"), 2));
         room.setRatePerNight(parseDouble(req.getParameter("ratePerNight"), 0));
         room.setDescription(req.getParameter("description"));
-        room.setAmenities(req.getParameter("amenities"));
+        String[] amenityArr = req.getParameterValues("amenities");
+        room.setAmenities(amenityArr != null ? String.join(",", amenityArr) : "");
         room.setImageUrl(req.getParameter("imageUrl"));
 
         log.info("Creating room: number={} type={} floor={} capacity={} rate={}", room.getRoomNumber(), room.getRoomType(), room.getFloor(), room.getCapacity(), room.getRatePerNight());
@@ -174,7 +175,8 @@ public class RoomController extends HttpServlet {
         room.setRatePerNight(parseDouble(req.getParameter("ratePerNight"), 0));
         room.setAvailable("true".equals(req.getParameter("isAvailable")) || "on".equals(req.getParameter("isAvailable")));
         room.setDescription(req.getParameter("description"));
-        room.setAmenities(req.getParameter("amenities"));
+        String[] amenityArrU = req.getParameterValues("amenities");
+        room.setAmenities(amenityArrU != null ? String.join(",", amenityArrU) : "");
         room.setImageUrl(req.getParameter("imageUrl"));
 
         log.info("Updating room id={} number={} type={}", room.getId(), room.getRoomNumber(), room.getRoomType());

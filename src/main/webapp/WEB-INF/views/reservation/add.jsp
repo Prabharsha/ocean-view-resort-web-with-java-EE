@@ -9,6 +9,29 @@
     <title>New Reservation — Ocean View Resort</title>
     <link rel="stylesheet" href="${ctx}/public/css/main.css">
     <link rel="stylesheet" href="${ctx}/public/css/dashboard.css">
+    <style>
+        .amenity-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .amenity-chip {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 12px; border-radius: 999px;
+            font-size: 12px; font-weight: 600;
+            background: #eaf4fb; color: #1a6080;
+            border: 1px solid #b3d9ee;
+        }
+        .room-amenities-box {
+            display: none;
+            margin-top: 10px;
+            padding: 12px 14px;
+            background: #f8fbfe;
+            border: 1px solid #d0eaf7;
+            border-radius: 8px;
+        }
+        .room-amenities-box .am-label {
+            font-size: 12px; font-weight: 600;
+            color: var(--text-muted); margin-bottom: 6px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 <body>
 <div class="app-layout">
@@ -44,9 +67,18 @@
                         <select id="roomId" name="roomId" class="form-select" required>
                             <option value="">Select Room</option>
                             <c:forEach var="rm" items="${rooms}">
-                                <option value="${rm.id}" ${reservation.roomId == rm.id ? 'selected' : ''}>${rm.roomNumber} — ${rm.roomType} (LKR <fmt:formatNumber value="${rm.ratePerNight}" pattern="#,##0.00" />/night, Max ${rm.capacity} guests)</option>
+                                <option value="${rm.id}"
+                                        data-amenities="${rm.amenities}"
+                                        ${reservation.roomId == rm.id ? 'selected' : ''}>
+                                    ${rm.roomNumber} — ${rm.roomType} (LKR <fmt:formatNumber value="${rm.ratePerNight}" pattern="#,##0.00" />/night, Max ${rm.capacity} guests)
+                                </option>
                             </c:forEach>
                         </select>
+                        <%-- Amenity chips panel — shown on room selection --%>
+                        <div class="room-amenities-box" id="amenitiesBox">
+                            <div class="am-label">&#127968; Room Amenities</div>
+                            <div class="amenity-chips" id="amenityChips"></div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -86,6 +118,47 @@
 <script>var contextPath='${ctx}';</script>
 <script src="${ctx}/public/js/main.js"></script>
 <script src="${ctx}/public/js/validation.js"></script>
+<script>
+// Amenity icon map
+var amenityIcons = {
+    'Wi-Fi':    '&#128246;',
+    'Smart TV': '&#128250;',
+    'AC':       '&#10052;',
+    'Phone':    '&#128222;',
+    'Kettle':   '&#9749;',
+    'Mini Bar': '&#127863;',
+    'Balcony':  '&#127774;'
+};
+
+function showAmenities(amenitiesStr) {
+    var box   = document.getElementById('amenitiesBox');
+    var chips = document.getElementById('amenityChips');
+    chips.innerHTML = '';
+    if (!amenitiesStr || amenitiesStr.trim() === '') { box.style.display = 'none'; return; }
+    var list = amenitiesStr.split(',');
+    list.forEach(function(am) {
+        am = am.trim();
+        if (!am) return;
+        var icon = amenityIcons[am] || '&#9679;';
+        var chip = document.createElement('span');
+        chip.className = 'amenity-chip';
+        chip.innerHTML = '<span>' + icon + '</span> ' + am;
+        chips.appendChild(chip);
+    });
+    box.style.display = list.filter(function(a){ return a.trim(); }).length ? 'block' : 'none';
+}
+
+var roomSel = document.getElementById('roomId');
+roomSel.addEventListener('change', function() {
+    var opt = this.options[this.selectedIndex];
+    showAmenities(opt ? opt.getAttribute('data-amenities') : '');
+});
+// Show on page load if a room is already pre-selected
+if (roomSel.value) {
+    var preOpt = roomSel.options[roomSel.selectedIndex];
+    showAmenities(preOpt ? preOpt.getAttribute('data-amenities') : '');
+}
+</script>
 </body>
 </html>
 

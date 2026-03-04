@@ -100,6 +100,19 @@ public class DashboardController extends HttpServlet {
             List<Map<String, Object>> recentReservations = getRecentReservations(conn, 10);
             req.setAttribute("recentReservations", recentReservations);
 
+            // Last 6 months revenue for bar chart
+            StringBuilder revenueJson = new StringBuilder("[");
+            String[] monthNames = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+            for (int i = 5; i >= 0; i--) {
+                LocalDate m = today.minusMonths(i);
+                double rev = getMonthRevenue(conn, m.getYear(), m.getMonthValue());
+                if (i < 5) revenueJson.append(",");
+                revenueJson.append("{\"month\":\"").append(monthNames[m.getMonthValue()-1]).append(" ").append(m.getYear())
+                           .append("\",\"revenue\":").append(rev).append("}");
+            }
+            revenueJson.append("]");
+            req.setAttribute("revenueJson", revenueJson.toString());
+
         } catch (Exception e) {
             log.error("Failed to load dashboard data for user '{}': {}", user.getUsername(), e.getMessage(), e);
             req.setAttribute("error", "Failed to load dashboard data");

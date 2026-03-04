@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,18 @@
     <title>Rooms — Ocean View Resort</title>
     <link rel="stylesheet" href="${ctx}/public/css/main.css">
     <link rel="stylesheet" href="${ctx}/public/css/dashboard.css">
+    <style>
+        /* Amenity chips in table */
+        .amenity-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+        .amenity-chip {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 9px; border-radius: 999px;
+            font-size: 11px; font-weight: 600;
+            background: #eaf4fb; color: #1a6080;
+            border: 1px solid #b3d9ee;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
 <div class="app-layout">
@@ -61,7 +74,7 @@
                 <div class="table-wrapper">
                     <table class="data-table">
                         <thead>
-                            <tr><th>Room No</th><th>Type</th><th>Floor</th><th>Capacity</th><th>Rate/Night</th><th>Status</th><th>Actions</th></tr>
+                            <tr><th>Room No</th><th>Type</th><th>Floor</th><th>Capacity</th><th>Rate/Night</th><th>Amenities</th><th>Status</th><th>Actions</th></tr>
                         </thead>
                         <tbody>
                         <c:forEach var="rm" items="${rooms}">
@@ -71,6 +84,18 @@
                                 <td>${rm.floor}</td>
                                 <td>${rm.capacity}</td>
                                 <td>LKR <fmt:formatNumber value="${rm.ratePerNight}" pattern="#,##0.00" /></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${not empty rm.amenities}">
+                                            <div class="amenity-chips">
+                                                <c:forEach var="am" items="${fn:split(rm.amenities, ',')}">
+                                                    <span class="amenity-chip">${fn:trim(am)}</span>
+                                                </c:forEach>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise><span class="text-muted" style="font-size:12px;">—</span></c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td><span class="badge ${rm.available ? 'badge-success' : 'badge-danger'}">${rm.available ? 'Available' : 'Unavailable'}</span></td>
                                 <td class="actions-cell">
                                     <c:if test="${maintenanceView}">
@@ -82,18 +107,18 @@
                                         </form>
                                     </c:if>
                                     <c:if test="${not maintenanceView}">
-                                        <a href="${ctx}/rooms?action=edit&id=${rm.id}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="${ctx}/rooms?action=edit&id=${rm.id}" class="btn btn-sm btn-action-edit">Edit</a>
                                         <form action="${ctx}/rooms" method="post" style="display:inline">
                                             <input type="hidden" name="action" value="delete">
                                             <input type="hidden" name="id" value="${rm.id}">
                                             <input type="hidden" name="csrfToken" value="${csrfToken}">
-                                            <button type="submit" class="btn btn-sm btn-danger" data-confirm="Delete this room?">Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-action-delete" data-confirm="Delete this room?">Delete</button>
                                         </form>
                                     </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
-                        <c:if test="${empty rooms}"><tr><td colspan="7" class="text-center text-muted">No rooms found</td></tr></c:if>
+                        <c:if test="${empty rooms}"><tr><td colspan="8" class="text-center text-muted">No rooms found</td></tr></c:if>
                         </tbody>
                     </table>
                 </div>

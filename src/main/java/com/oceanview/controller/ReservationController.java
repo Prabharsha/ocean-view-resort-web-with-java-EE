@@ -182,6 +182,13 @@ public class ReservationController extends HttpServlet {
         req.setAttribute("reservation", reservation);
         req.setAttribute("guest", guest);
         req.setAttribute("room", room);
+        // Load payment so bill can show payment status
+        try {
+            Payment payment = paymentService.getPaymentByReservation(id);
+            req.setAttribute("payment", payment);
+        } catch (ServiceException e) {
+            log.warn("handleBill: could not load payment for reservationId={}: {}", id, e.getMessage());
+        }
         req.getRequestDispatcher("/WEB-INF/views/reservation/bill.jsp").forward(req, resp);
     }
 
