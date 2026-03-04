@@ -146,8 +146,8 @@ public class RoomController extends HttpServlet {
         room.setCapacity(parseInt(req.getParameter("capacity"), 2));
         room.setRatePerNight(parseDouble(req.getParameter("ratePerNight"), 0));
         room.setDescription(req.getParameter("description"));
-        String[] amenityArr = req.getParameterValues("amenities");
-        room.setAmenities(amenityArr != null ? String.join(",", amenityArr) : "");
+        String amenitiesJson = req.getParameter("amenitiesJson");
+        room.setAmenities(amenitiesJson != null ? amenitiesJson : "[]");
         room.setImageUrl(req.getParameter("imageUrl"));
 
         log.info("Creating room: number={} type={} floor={} capacity={} rate={}", room.getRoomNumber(), room.getRoomType(), room.getFloor(), room.getCapacity(), room.getRatePerNight());
@@ -175,8 +175,8 @@ public class RoomController extends HttpServlet {
         room.setRatePerNight(parseDouble(req.getParameter("ratePerNight"), 0));
         room.setAvailable("true".equals(req.getParameter("isAvailable")) || "on".equals(req.getParameter("isAvailable")));
         room.setDescription(req.getParameter("description"));
-        String[] amenityArrU = req.getParameterValues("amenities");
-        room.setAmenities(amenityArrU != null ? String.join(",", amenityArrU) : "");
+        String amenitiesJson = req.getParameter("amenitiesJson");
+        room.setAmenities(amenitiesJson != null ? amenitiesJson : "[]");
         room.setImageUrl(req.getParameter("imageUrl"));
 
         log.info("Updating room id={} number={} type={}", room.getId(), room.getRoomNumber(), room.getRoomType());

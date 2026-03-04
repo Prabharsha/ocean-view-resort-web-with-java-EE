@@ -31,6 +31,7 @@
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="csrfToken" value="${csrfToken}">
                     <input type="hidden" name="id" value="${room.id}">
+                    <input type="hidden" id="amenitiesJson" name="amenitiesJson">
                     <div class="form-group">
                         <label for="roomNumber" class="form-label">Room Number *</label>
                         <input type="text" id="roomNumber" name="roomNumber" class="form-control" value="${room.roomNumber}" required>
@@ -123,6 +124,40 @@
 </div>
 <script>var contextPath='${ctx}';</script>
 <script src="${ctx}/public/js/main.js"></script>
+<script>
+// Pre-check amenity checkboxes — handles both JSON ["WiFi","AC"] and CSV "Wi-Fi,AC"
+(function(){
+    var raw = '${fn:escapeXml(room.amenities)}';
+    if (!raw) return;
+    var items;
+    var t = raw.trim();
+    if (t.charAt(0) === '[') {
+        try { items = JSON.parse(t); } catch(e) {
+            items = t.replace(/^\[|\]$/g,'').split(',').map(function(s){ return s.trim().replace(/^["']|["']$/g,''); });
+        }
+    } else {
+        items = t.split(',').map(function(s){ return s.trim(); });
+    }
+    // Alias map: old DB names → current checkbox values
+    var alias = {
+        'WiFi':'Wi-Fi','Wifi':'Wi-Fi','TV':'Smart TV','tv':'Smart TV',
+        'MiniBar':'Mini Bar','Mini-Bar':'Mini Bar','HotWater':'Hot Water',
+        'RoomService':'Room Service','PrivatePool':'Pool Access',
+        'Jacuzzi':'Bathtub'
+    };
+    items.forEach(function(am){
+        var name = alias[am] || am;
+        document.querySelectorAll('.amenity-check').forEach(function(cb){
+            if (cb.value === name) cb.checked = true;
+        });
+    });
+})();
+
+document.querySelector('form').addEventListener('submit', function(e) {
+    var checked = Array.from(document.querySelectorAll('.amenity-check:checked')).map(cb => cb.value);
+    document.getElementById('amenitiesJson').value = JSON.stringify(checked);
+});
+</script>
 </body>
 </html>
 

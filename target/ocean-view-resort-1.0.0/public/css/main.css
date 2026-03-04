@@ -180,7 +180,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
 .data-table tbody tr:hover { background: #f8fafd; }
 .data-table tbody tr:nth-child(even) { background: #fafbfc; }
 .data-table tbody tr:nth-child(even):hover { background: #f0f4f8; }
-.actions-cell { white-space: nowrap; display: flex; gap: 6px; }
+.actions-cell { white-space: nowrap; display: inline-flex; gap: 6px; align-items: center; }
 .text-center { text-align: center; }
 .text-muted { color: var(--text-muted); }
 

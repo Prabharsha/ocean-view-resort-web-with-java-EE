@@ -9,6 +9,7 @@ com\oceanview\service\GuestService.class
 com\oceanview\dao\impl\ReservationDAOImpl.class
 com\oceanview\controller\RoomController.class
 com\oceanview\dao\UserDAO.class
+com\oceanview\controller\HelpController.class
 com\oceanview\mapper\UserMapper.class
 com\oceanview\service\impl\RoomServiceImpl.class
 com\oceanview\controller\ReservationController.class
@@ -21,12 +22,14 @@ com\oceanview\mapper\ReservationMapper.class
 com\oceanview\controller\ReportController.class
 com\oceanview\filter\LoggingFilter.class
 com\oceanview\model\Room.class
+com\oceanview\controller\ProfileController.class
 com\oceanview\filter\AuthFilter.class
 com\oceanview\util\ValidationUtil.class
 com\oceanview\controller\LogTailServlet.class
 com\oceanview\model\Guest.class
 com\oceanview\dao\PaymentDAO.class
 com\oceanview\dao\RoomDAO.class
+com\oceanview\controller\StaffController.class
 com\oceanview\model\User.class
 com\oceanview\dao\impl\PaymentDAOImpl.class
 com\oceanview\service\RoomService.class
