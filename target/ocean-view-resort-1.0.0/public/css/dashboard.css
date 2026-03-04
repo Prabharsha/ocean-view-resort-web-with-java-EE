@@ -74,6 +74,32 @@
 }
 .flow-arrow { color: var(--text-muted); font-size: 14px; }
 
+/* ── Table action button pair (View / Edit) ────────────────────────────── */
+.btn-action-view {
+    background: #eaf4fb;
+    color: #2e86ab;
+    border: 1.5px solid #b3d9ee;
+}
+.btn-action-view:hover {
+    background: #d0eaf7;
+    color: #1a6080;
+    border-color: #2e86ab;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(46,134,171,0.18);
+}
+.btn-action-edit {
+    background: #2e86ab;
+    color: #fff;
+    border: 1.5px solid #2e86ab;
+}
+.btn-action-edit:hover {
+    background: #236e8e;
+    border-color: #236e8e;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(46,134,171,0.28);
+}
+
 /* ── Action card button row ────────────────────────────────────────────── */
 .action-card .action-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
 .action-card .card-title { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }

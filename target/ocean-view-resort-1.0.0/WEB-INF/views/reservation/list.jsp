@@ -63,9 +63,9 @@
                                 <td><span class="badge badge-${r.status == 'CONFIRMED' ? 'primary' : r.status == 'CHECKED_IN' ? 'success' : r.status == 'CHECKED_OUT' ? 'muted' : r.status == 'CANCELLED' ? 'danger' : 'warning'}">${r.status}</span></td>
                                 <td>LKR <fmt:formatNumber value="${r.totalAmount}" pattern="#,##0.00" /></td>
                                 <td class="actions-cell">
-                                    <a href="${ctx}/reservations?action=view&id=${r.id}" class="btn btn-sm btn-outline">View</a>
+                                    <a href="${ctx}/reservations?action=view&id=${r.id}" class="btn btn-sm btn-action-view">View</a>
                                     <c:if test="${r.status != 'CANCELLED' && r.status != 'CHECKED_OUT'}">
-                                        <a href="${ctx}/reservations?action=edit&id=${r.id}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="${ctx}/reservations?action=edit&id=${r.id}" class="btn btn-sm btn-action-edit">Edit</a>
                                     </c:if>
                                 </td>
                             </tr>

@@ -82,12 +82,12 @@
                                         </form>
                                     </c:if>
                                     <c:if test="${not maintenanceView}">
-                                        <a href="${ctx}/rooms?action=edit&id=${rm.id}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="${ctx}/rooms?action=edit&id=${rm.id}" class="btn btn-sm btn-action-edit">Edit</a>
                                         <form action="${ctx}/rooms" method="post" style="display:inline">
                                             <input type="hidden" name="action" value="delete">
                                             <input type="hidden" name="id" value="${rm.id}">
                                             <input type="hidden" name="csrfToken" value="${csrfToken}">
-                                            <button type="submit" class="btn btn-sm btn-danger" data-confirm="Delete this room?">Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-action-delete" data-confirm="Delete this room?">Delete</button>
                                         </form>
                                     </c:if>
                                 </td>
