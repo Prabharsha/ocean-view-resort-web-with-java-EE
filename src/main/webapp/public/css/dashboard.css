@@ -74,11 +74,29 @@
 }
 .flow-arrow { color: var(--text-muted); font-size: 14px; }
 
-/* ── Table action button pair (View / Edit) ────────────────────────────── */
+/* ── Table action button pair ──────────────────────────────────────────── */
+.btn-action-view,
+.btn-action-edit,
+.btn-action-delete {
+    min-width: 58px;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    line-height: 1.4;
+}
 .btn-action-view {
     background: #eaf4fb;
     color: #2e86ab;
-    border: 1.5px solid #b3d9ee;
+    border-color: #b3d9ee;
 }
 .btn-action-view:hover {
     background: #d0eaf7;
@@ -89,20 +107,20 @@
 }
 .btn-action-edit {
     background: #2e86ab;
-    color: #fff;
-    border: 1.5px solid #2e86ab;
+    color: #fff !important;
+    border-color: #2e86ab;
 }
 .btn-action-edit:hover {
     background: #236e8e;
     border-color: #236e8e;
-    color: #fff;
+    color: #fff !important;
     transform: translateY(-1px);
     box-shadow: 0 2px 6px rgba(46,134,171,0.28);
 }
 .btn-action-delete {
     background: #fef2f2;
     color: #c0392b;
-    border: 1.5px solid #f5b7b1;
+    border-color: #f5b7b1;
 }
 .btn-action-delete:hover {
     background: #fde8e8;
@@ -111,6 +129,17 @@
     transform: translateY(-1px);
     box-shadow: 0 2px 6px rgba(192,57,43,0.18);
 }
+
+/* Prevent table link styles from bleeding into action buttons */
+.data-table td a.btn-action-view,
+.data-table td a.btn-action-edit,
+.data-table td a.btn-action-delete {
+    text-decoration: none;
+    font-weight: 600;
+}
+.data-table td a.btn-action-view { color: #2e86ab; }
+.data-table td a.btn-action-edit { color: #fff; }
+.data-table td a.btn-action-delete { color: #c0392b; }
 
 /* ── Action card button row ────────────────────────────────────────────── */
 .action-card .action-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }

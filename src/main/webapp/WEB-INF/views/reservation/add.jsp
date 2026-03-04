@@ -140,17 +140,32 @@ function showAmenities(amenitiesStr) {
     var chips = document.getElementById('amenityChips');
     chips.innerHTML = '';
     if (!amenitiesStr || amenitiesStr.trim() === '') { box.style.display = 'none'; return; }
-    var list = amenitiesStr.split(',');
+    var list;
+    // Handle JSON array format: ["WiFi","AC","TV"] or comma-separated: Wi-Fi,AC
+    var trimmed = amenitiesStr.trim();
+    if (trimmed.charAt(0) === '[') {
+        // JSON array
+        try {
+            list = JSON.parse(trimmed);
+        } catch(e) {
+            // Fallback: strip brackets and split
+            list = trimmed.replace(/^\[|\]$/g,'').split(',').map(function(s){
+                return s.trim().replace(/^["']|["']$/g,'');
+            });
+        }
+    } else {
+        list = trimmed.split(',').map(function(s){ return s.trim(); });
+    }
+    list = list.filter(function(a){ return a.length > 0; });
+    if (!list.length) { box.style.display = 'none'; return; }
     list.forEach(function(am) {
-        am = am.trim();
-        if (!am) return;
         var icon = amenityIcons[am] || '&#9679;';
         var chip = document.createElement('span');
         chip.className = 'amenity-chip';
         chip.innerHTML = '<span>' + icon + '</span> ' + am;
         chips.appendChild(chip);
     });
-    box.style.display = list.filter(function(a){ return a.trim(); }).length ? 'block' : 'none';
+    box.style.display = 'block';
 }
 
 var roomSel = document.getElementById('roomId');

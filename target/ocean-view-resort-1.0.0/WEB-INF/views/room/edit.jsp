@@ -67,26 +67,41 @@
                         <label class="form-label">Amenities</label>
                         <div class="amenity-grid">
                             <c:set var="cur" value="${not empty room.amenities ? room.amenities : ''}" />
-                            <input type="checkbox" id="am_wifi"    name="amenities" value="Wi-Fi"    class="amenity-check" ${fn:contains(cur,'Wi-Fi')    ? 'checked' : ''}>
-                            <label for="am_wifi"    class="amenity-label"><span class="amenity-icon">&#128246;</span> Wi-Fi</label>
+                            <input type="checkbox" id="am_wifi"      name="amenities" value="Wi-Fi"       class="amenity-check" ${fn:contains(cur,'Wi-Fi')       ? 'checked' : ''}>
+                            <label for="am_wifi"      class="amenity-label"><span class="amenity-icon">&#128246;</span> Wi-Fi</label>
 
-                            <input type="checkbox" id="am_tv"      name="amenities" value="Smart TV" class="amenity-check" ${fn:contains(cur,'Smart TV') ? 'checked' : ''}>
-                            <label for="am_tv"      class="amenity-label"><span class="amenity-icon">&#128250;</span> Smart TV</label>
+                            <input type="checkbox" id="am_tv"        name="amenities" value="Smart TV"    class="amenity-check" ${fn:contains(cur,'Smart TV')    ? 'checked' : ''}>
+                            <label for="am_tv"        class="amenity-label"><span class="amenity-icon">&#128250;</span> Smart TV</label>
 
-                            <input type="checkbox" id="am_ac"      name="amenities" value="AC"       class="amenity-check" ${fn:contains(cur,'AC')       ? 'checked' : ''}>
-                            <label for="am_ac"      class="amenity-label"><span class="amenity-icon">&#10052;</span> AC</label>
+                            <input type="checkbox" id="am_ac"        name="amenities" value="AC"          class="amenity-check" ${fn:contains(cur,'AC')          ? 'checked' : ''}>
+                            <label for="am_ac"        class="amenity-label"><span class="amenity-icon">&#10052;</span> AC</label>
 
-                            <input type="checkbox" id="am_phone"   name="amenities" value="Phone"    class="amenity-check" ${fn:contains(cur,'Phone')    ? 'checked' : ''}>
-                            <label for="am_phone"   class="amenity-label"><span class="amenity-icon">&#128222;</span> Phone</label>
+                            <input type="checkbox" id="am_phone"     name="amenities" value="Phone"       class="amenity-check" ${fn:contains(cur,'Phone')       ? 'checked' : ''}>
+                            <label for="am_phone"     class="amenity-label"><span class="amenity-icon">&#128222;</span> Phone</label>
 
-                            <input type="checkbox" id="am_kettle"  name="amenities" value="Kettle"   class="amenity-check" ${fn:contains(cur,'Kettle')   ? 'checked' : ''}>
-                            <label for="am_kettle"  class="amenity-label"><span class="amenity-icon">&#9749;</span> Kettle</label>
+                            <input type="checkbox" id="am_kettle"    name="amenities" value="Kettle"      class="amenity-check" ${fn:contains(cur,'Kettle')      ? 'checked' : ''}>
+                            <label for="am_kettle"    class="amenity-label"><span class="amenity-icon">&#9749;</span> Kettle</label>
 
-                            <input type="checkbox" id="am_minibar" name="amenities" value="Mini Bar" class="amenity-check" ${fn:contains(cur,'Mini Bar') ? 'checked' : ''}>
-                            <label for="am_minibar" class="amenity-label"><span class="amenity-icon">&#127863;</span> Mini Bar</label>
+                            <input type="checkbox" id="am_minibar"   name="amenities" value="Mini Bar"    class="amenity-check" ${fn:contains(cur,'Mini Bar')    ? 'checked' : ''}>
+                            <label for="am_minibar"   class="amenity-label"><span class="amenity-icon">&#127863;</span> Mini Bar</label>
 
-                            <input type="checkbox" id="am_balcony" name="amenities" value="Balcony"  class="amenity-check" ${fn:contains(cur,'Balcony')  ? 'checked' : ''}>
-                            <label for="am_balcony" class="amenity-label"><span class="amenity-icon">&#127774;</span> Balcony</label>
+                            <input type="checkbox" id="am_balcony"   name="amenities" value="Balcony"     class="amenity-check" ${fn:contains(cur,'Balcony')     ? 'checked' : ''}>
+                            <label for="am_balcony"   class="amenity-label"><span class="amenity-icon">&#127774;</span> Balcony</label>
+
+                            <input type="checkbox" id="am_bathtub"   name="amenities" value="Bathtub"     class="amenity-check" ${fn:contains(cur,'Bathtub')     ? 'checked' : ''}>
+                            <label for="am_bathtub"   class="amenity-label"><span class="amenity-icon">&#128705;</span> Bathtub</label>
+
+                            <input type="checkbox" id="am_safe"      name="amenities" value="Safe"        class="amenity-check" ${fn:contains(cur,'Safe')        ? 'checked' : ''}>
+                            <label for="am_safe"      class="amenity-label"><span class="amenity-icon">&#128272;</span> Safe</label>
+
+                            <input type="checkbox" id="am_parking"   name="amenities" value="Parking"     class="amenity-check" ${fn:contains(cur,'Parking')     ? 'checked' : ''}>
+                            <label for="am_parking"   class="amenity-label"><span class="amenity-icon">&#128663;</span> Parking</label>
+
+                            <input type="checkbox" id="am_pool"      name="amenities" value="Pool Access" class="amenity-check" ${fn:contains(cur,'Pool Access') ? 'checked' : ''}>
+                            <label for="am_pool"      class="amenity-label"><span class="amenity-icon">&#127946;</span> Pool Access</label>
+
+                            <input type="checkbox" id="am_breakfast" name="amenities" value="Breakfast"   class="amenity-check" ${fn:contains(cur,'Breakfast')   ? 'checked' : ''}>
+                            <label for="am_breakfast" class="amenity-label"><span class="amenity-icon">&#127859;</span> Breakfast</label>
                         </div>
                     </div>
                     <div class="form-group form-group--full">
@@ -108,6 +123,35 @@
 </div>
 <script>var contextPath='${ctx}';</script>
 <script src="${ctx}/public/js/main.js"></script>
+<script>
+// Pre-check amenity checkboxes — handles both JSON ["WiFi","AC"] and CSV "Wi-Fi,AC"
+(function(){
+    var raw = '${fn:escapeXml(room.amenities)}';
+    if (!raw) return;
+    var items;
+    var t = raw.trim();
+    if (t.charAt(0) === '[') {
+        try { items = JSON.parse(t); } catch(e) {
+            items = t.replace(/^\[|\]$/g,'').split(',').map(function(s){ return s.trim().replace(/^["']|["']$/g,''); });
+        }
+    } else {
+        items = t.split(',').map(function(s){ return s.trim(); });
+    }
+    // Alias map: old DB names → current checkbox values
+    var alias = {
+        'WiFi':'Wi-Fi','Wifi':'Wi-Fi','TV':'Smart TV','tv':'Smart TV',
+        'MiniBar':'Mini Bar','Mini-Bar':'Mini Bar','HotWater':'Hot Water',
+        'RoomService':'Room Service','PrivatePool':'Pool Access',
+        'Jacuzzi':'Bathtub'
+    };
+    items.forEach(function(am){
+        var name = alias[am] || am;
+        document.querySelectorAll('.amenity-check').forEach(function(cb){
+            if (cb.value === name) cb.checked = true;
+        });
+    });
+})();
+</script>
 </body>
 </html>
 

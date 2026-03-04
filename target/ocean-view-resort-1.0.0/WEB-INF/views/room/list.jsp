@@ -87,11 +87,24 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${not empty rm.amenities}">
-                                            <div class="amenity-chips">
-                                                <c:forEach var="am" items="${fn:split(rm.amenities, ',')}">
-                                                    <span class="amenity-chip">${fn:trim(am)}</span>
-                                                </c:forEach>
-                                            </div>
+                                            <div class="amenity-chips" id="ac-${rm.id}"></div>
+                                            <script>
+                                            (function(){
+                                                var raw = '${fn:escapeXml(rm.amenities)}';
+                                                // Strip JSON array brackets and quotes, then split
+                                                raw = raw.replace(/^\[/, '').replace(/\]$/, '');
+                                                var items = raw.split(',').map(function(s){
+                                                    return s.trim().replace(/^["']|["']$/g,'');
+                                                }).filter(function(s){ return s.length > 0; });
+                                                var container = document.getElementById('ac-${rm.id}');
+                                                items.forEach(function(am){
+                                                    var span = document.createElement('span');
+                                                    span.className = 'amenity-chip';
+                                                    span.textContent = am;
+                                                    container.appendChild(span);
+                                                });
+                                            })();
+                                            </script>
                                         </c:when>
                                         <c:otherwise><span class="text-muted" style="font-size:12px;">—</span></c:otherwise>
                                     </c:choose>

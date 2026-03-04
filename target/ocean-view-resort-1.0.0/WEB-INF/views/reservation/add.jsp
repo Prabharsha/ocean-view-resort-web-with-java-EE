@@ -121,13 +121,18 @@
 <script>
 // Amenity icon map
 var amenityIcons = {
-    'Wi-Fi':    '&#128246;',
-    'Smart TV': '&#128250;',
-    'AC':       '&#10052;',
-    'Phone':    '&#128222;',
-    'Kettle':   '&#9749;',
-    'Mini Bar': '&#127863;',
-    'Balcony':  '&#127774;'
+    'Wi-Fi':       '&#128246;',
+    'Smart TV':    '&#128250;',
+    'AC':          '&#10052;',
+    'Phone':       '&#128222;',
+    'Kettle':      '&#9749;',
+    'Mini Bar':    '&#127863;',
+    'Balcony':     '&#127774;',
+    'Bathtub':     '&#128705;',
+    'Safe':        '&#128272;',
+    'Parking':     '&#128663;',
+    'Pool Access': '&#127946;',
+    'Breakfast':   '&#127859;'
 };
 
 function showAmenities(amenitiesStr) {
@@ -135,17 +140,32 @@ function showAmenities(amenitiesStr) {
     var chips = document.getElementById('amenityChips');
     chips.innerHTML = '';
     if (!amenitiesStr || amenitiesStr.trim() === '') { box.style.display = 'none'; return; }
-    var list = amenitiesStr.split(',');
+    var list;
+    // Handle JSON array format: ["WiFi","AC","TV"] or comma-separated: Wi-Fi,AC
+    var trimmed = amenitiesStr.trim();
+    if (trimmed.charAt(0) === '[') {
+        // JSON array
+        try {
+            list = JSON.parse(trimmed);
+        } catch(e) {
+            // Fallback: strip brackets and split
+            list = trimmed.replace(/^\[|\]$/g,'').split(',').map(function(s){
+                return s.trim().replace(/^["']|["']$/g,'');
+            });
+        }
+    } else {
+        list = trimmed.split(',').map(function(s){ return s.trim(); });
+    }
+    list = list.filter(function(a){ return a.length > 0; });
+    if (!list.length) { box.style.display = 'none'; return; }
     list.forEach(function(am) {
-        am = am.trim();
-        if (!am) return;
         var icon = amenityIcons[am] || '&#9679;';
         var chip = document.createElement('span');
         chip.className = 'amenity-chip';
         chip.innerHTML = '<span>' + icon + '</span> ' + am;
         chips.appendChild(chip);
     });
-    box.style.display = list.filter(function(a){ return a.trim(); }).length ? 'block' : 'none';
+    box.style.display = 'block';
 }
 
 var roomSel = document.getElementById('roomId');

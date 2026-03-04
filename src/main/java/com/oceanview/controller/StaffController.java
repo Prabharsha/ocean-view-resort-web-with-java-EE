@@ -70,6 +70,7 @@ public class StaffController extends HttpServlet {
     private void handleList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ServiceException {
         List<User> users = userService.getAllUsers();
         req.setAttribute("staffUsers", users);
+        generateCsrfToken(req);
         req.getRequestDispatcher("/WEB-INF/views/staff/list.jsp").forward(req, resp);
     }
 

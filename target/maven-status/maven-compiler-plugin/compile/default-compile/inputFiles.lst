@@ -5,9 +5,11 @@ D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\ja
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\controller\LogTailServlet.java
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\controller\MaintenanceController.java
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\controller\PaymentController.java
+D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\controller\ProfileController.java
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\controller\ReportController.java
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\controller\ReservationController.java
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\controller\RoomController.java
+D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\controller\StaffController.java
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\dao\DAOException.java
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\dao\GuestDAO.java
 D:\Personal\ICBT\Advanced Programming\project-impl\ocean-view-resort\src\main\java\com\oceanview\dao\impl\GuestDAOImpl.java
