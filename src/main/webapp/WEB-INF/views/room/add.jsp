@@ -133,6 +133,7 @@
                         <label for="imageUrl" class="form-label">Image URL</label>
                         <input type="text" id="imageUrl" name="imageUrl" class="form-control" value="${room.imageUrl}">
                     </div>
+                    <input type="hidden" id="amenitiesJson" name="amenitiesJson">
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Add Room</button>
                         <a href="${ctx}/rooms?action=list" class="btn btn-outline">Cancel</a>
@@ -144,6 +145,11 @@
 </div>
 <script>var contextPath='${ctx}';</script>
 <script src="${ctx}/public/js/main.js"></script>
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    var checked = Array.from(document.querySelectorAll('.amenity-check:checked')).map(cb => cb.value);
+    document.getElementById('amenitiesJson').value = JSON.stringify(checked);
+});
+</script>
 </body>
 </html>
-

@@ -31,6 +31,7 @@
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="csrfToken" value="${csrfToken}">
                     <input type="hidden" name="id" value="${room.id}">
+                    <input type="hidden" id="amenitiesJson" name="amenitiesJson">
                     <div class="form-group">
                         <label for="roomNumber" class="form-label">Room Number *</label>
                         <input type="text" id="roomNumber" name="roomNumber" class="form-control" value="${room.roomNumber}" required>
@@ -151,6 +152,11 @@
         });
     });
 })();
+
+document.querySelector('form').addEventListener('submit', function(e) {
+    var checked = Array.from(document.querySelectorAll('.amenity-check:checked')).map(cb => cb.value);
+    document.getElementById('amenitiesJson').value = JSON.stringify(checked);
+});
 </script>
 </body>
 </html>

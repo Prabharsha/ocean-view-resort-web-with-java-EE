@@ -21,6 +21,7 @@
             <li class="nav-item"><a href="${ctx}/maintenance" class="nav-link"><span class="nav-icon">&#9881;</span>Maintenance</a></li>
             <li class="nav-item"><a href="${ctx}/logs" class="nav-link"><span class="nav-icon">&#128221;</span>Live Logs</a></li>
         </c:if>
+        <li class="nav-item"><a href="${ctx}/help" class="nav-link"><span class="nav-icon">&#10067;</span>Help & FAQ</a></li>
     </ul>
     <div class="user-info">
         <span class="user-avatar">${fn:substring(sessionScope.loggedUser.fname, 0, 1)}${fn:substring(sessionScope.loggedUser.lname, 0, 1)}</span>
@@ -46,4 +47,3 @@
         </div>
     </div>
 </div>
-

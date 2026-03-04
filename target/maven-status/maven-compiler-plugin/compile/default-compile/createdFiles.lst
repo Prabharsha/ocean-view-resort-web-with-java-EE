@@ -9,6 +9,7 @@ com\oceanview\service\GuestService.class
 com\oceanview\dao\impl\ReservationDAOImpl.class
 com\oceanview\controller\RoomController.class
 com\oceanview\dao\UserDAO.class
+com\oceanview\controller\HelpController.class
 com\oceanview\mapper\UserMapper.class
 com\oceanview\service\impl\RoomServiceImpl.class
 com\oceanview\controller\ReservationController.class

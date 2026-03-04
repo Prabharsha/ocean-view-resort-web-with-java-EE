@@ -87,24 +87,7 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${not empty rm.amenities}">
-                                            <div class="amenity-chips" id="ac-${rm.id}"></div>
-                                            <script>
-                                            (function(){
-                                                var raw = '${fn:escapeXml(rm.amenities)}';
-                                                // Strip JSON array brackets and quotes, then split
-                                                raw = raw.replace(/^\[/, '').replace(/\]$/, '');
-                                                var items = raw.split(',').map(function(s){
-                                                    return s.trim().replace(/^["']|["']$/g,'');
-                                                }).filter(function(s){ return s.length > 0; });
-                                                var container = document.getElementById('ac-${rm.id}');
-                                                items.forEach(function(am){
-                                                    var span = document.createElement('span');
-                                                    span.className = 'amenity-chip';
-                                                    span.textContent = am;
-                                                    container.appendChild(span);
-                                                });
-                                            })();
-                                            </script>
+                                            <div class="amenity-chips" data-amenities="${fn:escapeXml(rm.amenities)}"></div>
                                         </c:when>
                                         <c:otherwise><span class="text-muted" style="font-size:12px;">—</span></c:otherwise>
                                     </c:choose>
@@ -141,6 +124,28 @@
 </div>
 <script>var contextPath='${ctx}';</script>
 <script src="${ctx}/public/js/main.js"></script>
+<script>
+// Render amenity chips from data-amenities attribute (HTML attr decoding fixes &quot; → ")
+document.querySelectorAll('.amenity-chips[data-amenities]').forEach(function(container) {
+    var raw = container.getAttribute('data-amenities');
+    if (!raw) return;
+    var items = [];
+    try {
+        if (raw.trim().charAt(0) === '[') {
+            items = JSON.parse(raw);
+        } else {
+            items = raw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+        }
+    } catch (e) { items = []; }
+    items.forEach(function(am) {
+        if (!am) return;
+        var span = document.createElement('span');
+        span.className = 'amenity-chip';
+        span.textContent = am;
+        container.appendChild(span);
+    });
+});
+</script>
 </body>
 </html>
 
