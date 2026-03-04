@@ -1,0 +1,79 @@
+/* ============================================================
+   Dashboard-specific styles
+   ============================================================ */
+
+/* Chart sizing */
+.dashboard-grid .chart-container { height: 300px; }
+
+/* Cards inside the dashboard grid should not have bottom margin
+   since align-items: start handles spacing */
+.dashboard-grid > .card { margin-bottom: 0; }
+
+/* Recent reservations link styling */
+.data-table td a { color: var(--secondary); font-weight: 600; }
+.data-table td a:hover { color: var(--primary); text-decoration: underline; }
+
+/* Quick stat animaton */
+.stat-value {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stat cards hover effect */
+.stat-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+/* Revenue comparison display */
+.revenue-comparison {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+}
+.revenue-comparison .vs { color: var(--text-muted); font-size: 13px; }
+
+/* Dashboard welcome */
+.dashboard-welcome {
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* ── Reservation status flow indicator ────────────────────────────────── */
+.status-flow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    vertical-align: middle;
+}
+.flow-step {
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: var(--bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+.flow-step.flow-active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    font-weight: 600;
+}
+.flow-step.flow-done {
+    background: #d1fae5;
+    color: #065f46;
+    border-color: #6ee7b7;
+}
+.flow-arrow { color: var(--text-muted); font-size: 14px; }
+
+/* ── Action card button row ────────────────────────────────────────────── */
+.action-card .action-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.action-card .card-title { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }

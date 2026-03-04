@@ -1,0 +1,4 @@
+com\oceanview\service\RoomServiceTest.class
+com\oceanview\service\ReservationServiceTest.class
+com\oceanview\dao\ReservationDAOTest.class
+com\oceanview\service\PaymentServiceTest.class

@@ -1,0 +1,71 @@
+/* ============================================================
+   Print Stylesheet — hides navigation when printing
+   ============================================================ */
+
+@media print {
+    .sidebar,
+    .navbar,
+    .sidebar-toggle,
+    .no-print,
+    .page-header .btn,
+    .header-actions,
+    .filter-card,
+    .action-card,
+    .alert {
+        display: none !important;
+    }
+
+    .main-wrapper {
+        margin-left: 0 !important;
+    }
+
+    .main-content {
+        padding: 0 !important;
+    }
+
+    .app-layout {
+        display: block;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+    }
+
+    body {
+        background: #fff;
+        font-size: 12pt;
+        color: #000;
+    }
+
+    a {
+        color: #000 !important;
+        text-decoration: none !important;
+    }
+
+    .badge {
+        border: 1px solid #999;
+        background: transparent !important;
+        color: #000 !important;
+    }
+
+    .bill-card,
+    .receipt-card {
+        max-width: 100%;
+        border: none;
+        padding: 0;
+    }
+
+    .bill-table,
+    .receipt-table,
+    .data-table {
+        font-size: 11pt;
+    }
+
+    .bill-total td,
+    .receipt-total td {
+        background: #f0f0f0 !important;
+    }
+}
+
