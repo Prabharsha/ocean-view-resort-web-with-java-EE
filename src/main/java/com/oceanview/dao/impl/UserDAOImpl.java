@@ -186,5 +186,18 @@ public class UserDAOImpl implements UserDAO {
             throw new DAOException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public void toggleActive(String userId) throws DAOException {
+        String sql = "UPDATE users SET is_active = NOT is_active WHERE id=?";
+        log.debug("toggleActive: userId={}", userId);
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            log.error("toggleActive: SQL error for userId='{}': {}", userId, e.getMessage(), e);
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
 }
 

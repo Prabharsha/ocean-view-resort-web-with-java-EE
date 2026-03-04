@@ -147,6 +147,20 @@ public class ReservationServiceImpl implements ReservationService {
                 return ServiceResult.failure("Only PENDING reservations can be confirmed. Current status: " + existing.getStatus());
             reservationDAO.updateStatus(id, "CONFIRMED");
             log.info("confirmReservation: reservation id={} (no={}) confirmed", id, existing.getReservationNo());
+
+            // Send booking confirmation email
+            Guest guest = guestDAO.findById(existing.getGuestId());
+            if (guest != null && guest.getEmail() != null) {
+                EmailUtil.sendReservationConfirmation(
+                    guest.getEmail(), guest.getName(),
+                    existing.getReservationNo(),
+                    existing.getCheckInDate().toString(),
+                    existing.getCheckOutDate().toString(),
+                    existing.getTotalAmount());
+                log.debug("confirmReservation: confirmation email sent to {}", guest.getEmail());
+                return ServiceResult.success("Reservation " + existing.getReservationNo()
+                    + " confirmed. Confirmation email sent to " + guest.getEmail(), "EMAIL_SENT");
+            }
             return ServiceResult.success("Reservation " + existing.getReservationNo() + " confirmed successfully");
         } catch (DAOException e) {
             log.error("confirmReservation DAO error for id='{}': {}", id, e.getMessage(), e);

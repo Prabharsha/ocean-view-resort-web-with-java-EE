@@ -9,6 +9,9 @@ public interface UserService {
     ServiceResult authenticate(String username, String password) throws ServiceException;
     ServiceResult register(User user) throws ServiceException;
     ServiceResult resetPassword(String userId, String newPassword) throws ServiceException;
+    ServiceResult changePassword(String userId, String currentPassword, String newPassword) throws ServiceException;
+    ServiceResult createStaffUser(User user) throws ServiceException;
+    ServiceResult toggleUserActive(String userId) throws ServiceException;
     User getUserById(String id) throws ServiceException;
     User getUserByUsername(String username) throws ServiceException;
     List<User> getAllUsers() throws ServiceException;
@@ -16,4 +19,6 @@ public interface UserService {
     ServiceResult updateUser(User user) throws ServiceException;
     ServiceResult deleteUser(String id) throws ServiceException;
 }
+
+
 

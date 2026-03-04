@@ -121,13 +121,18 @@
 <script>
 // Amenity icon map
 var amenityIcons = {
-    'Wi-Fi':    '&#128246;',
-    'Smart TV': '&#128250;',
-    'AC':       '&#10052;',
-    'Phone':    '&#128222;',
-    'Kettle':   '&#9749;',
-    'Mini Bar': '&#127863;',
-    'Balcony':  '&#127774;'
+    'Wi-Fi':       '&#128246;',
+    'Smart TV':    '&#128250;',
+    'AC':          '&#10052;',
+    'Phone':       '&#128222;',
+    'Kettle':      '&#9749;',
+    'Mini Bar':    '&#127863;',
+    'Balcony':     '&#127774;',
+    'Bathtub':     '&#128705;',
+    'Safe':        '&#128272;',
+    'Parking':     '&#128663;',
+    'Pool Access': '&#127946;',
+    'Breakfast':   '&#127859;'
 };
 
 function showAmenities(amenitiesStr) {
