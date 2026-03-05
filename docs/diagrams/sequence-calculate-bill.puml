@@ -1,0 +1,108 @@
+@startuml Sequence_CalculateBill
+title Sequence Diagram - Calculate and Process Payment (Bill)
+
+actor "Staff" as Actor
+participant "ReservationController" as RC
+participant "PaymentController" as PC
+participant "PaymentServiceImpl" as PS
+participant "ReservationServiceImpl" as RS
+participant "GuestServiceImpl" as GS
+participant "RoomServiceImpl" as RMS
+participant "PaymentContext" as CTX
+participant "PaymentStrategy" as STR
+participant "PaymentDAOImpl" as PD
+participant "ReservationDAOImpl" as RvD
+participant "GuestDAOImpl" as GD
+participant "EmailUtil" as EU
+database "MySQL" as MySQL
+
+== View Bill ==
+
+Actor -> RC : GET /reservations?action=bill&id=xyz
+activate RC
+RC -> RS : getReservation(id)
+activate RS
+RS -> RvD : findById(id)
+activate RvD
+RvD -> MySQL : SELECT * FROM reservations WHERE id=?
+MySQL --> RvD : ResultSet
+RvD --> RS : Reservation (totalAmount from DB trigger)
+deactivate RvD
+RS --> RC : Reservation
+deactivate RS
+RC -> GS : getGuestById(guestId)
+GS --> RC : Guest
+RC -> RMS : getRoom(roomId)
+RMS --> RC : Room
+RC -> PS : getPaymentByReservation(id)
+PS --> RC : Payment or null
+RC --> Actor : forward bill.jsp (reservation, guest, room, payment)
+deactivate RC
+
+== Process Payment ==
+
+Actor -> PC : POST /payments (reservationId, method, referenceNo, notes)
+activate PC
+PC -> PC : validateCsrf()
+PC -> PS : processPayment(reservationId, method, referenceNo, notes, staffId)
+activate PS
+PS -> RvD : findById(reservationId)
+RvD --> PS : Reservation
+
+alt Invalid reservation
+    PS --> PC : ServiceResult.failure("Cannot process")
+    PC --> Actor : form.jsp (error)
+else Valid reservation
+    PS -> PD : existsForReservation(reservationId)
+    PD --> PS : false
+    PS -> CTX : setStrategy(CashStrategy or CardStrategy)
+    activate CTX
+    PS -> CTX : executePayment(payment)
+    CTX -> STR : execute(payment)
+    activate STR
+
+    alt Validation fails
+        STR --> CTX : failure
+        CTX --> PS : failure
+        PS --> PC : failure
+        PC --> Actor : form.jsp (error)
+    else Validation passes
+        STR --> CTX : success
+        deactivate STR
+        deactivate CTX
+        PS -> PD : save(payment)
+        PD -> MySQL : INSERT INTO payments
+        MySQL --> PD : success
+        PS -> GD : findById(guestId)
+        GD --> PS : Guest
+        opt Guest has email
+            PS -> EU : sendPaymentReceipt(email, details)
+            EU --> PS : void (async)
+        end
+        PS --> PC : ServiceResult.success("Payment recorded", payment)
+    end
+end
+deactivate PS
+
+opt Success
+    PC --> Actor : redirect /payments?action=receipt&id=paymentId
+end
+deactivate PC
+
+== Print Receipt ==
+
+Actor -> PC : GET /payments?action=receipt&id=paymentId
+activate PC
+PC -> PS : getPayment(id)
+PS --> PC : Payment
+PC -> RS : getReservation(reservationId)
+RS --> PC : Reservation
+PC -> GS : getGuestById(guestId)
+GS --> PC : Guest
+PC -> RMS : getRoom(roomId)
+RMS --> PC : Room
+PC --> Actor : forward receipt.jsp (print-ready view)
+deactivate PC
+
+@enduml
+
