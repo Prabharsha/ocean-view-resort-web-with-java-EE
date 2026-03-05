@@ -1,0 +1,158 @@
+@startuml UseCase_OceanViewResort
+' ============================================================
+' Figure 1: Use Case Diagram for Ocean View Resort
+' Reservation System
+' Created using PlantUML following UML 2.5 notation
+' ============================================================
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+    BackgroundColor #F0F8FF
+    BorderColor #2E86AB
+    ArrowColor #1A3C5E
+}
+skinparam actor {
+    BackgroundColor #E8F5E9
+    BorderColor #2D9B5E
+}
+
+rectangle "Ocean View Resort Reservation System" as system {
+
+    ' --- Authentication Use Cases ---
+    usecase "Login" as UC_Login
+    usecase "Logout" as UC_Logout
+    usecase "Change Password" as UC_ChangePass
+    usecase "Validate Credentials" as UC_ValidateCreds
+
+    ' --- Guest Management Use Cases ---
+    usecase "Add New Guest" as UC_AddGuest
+    usecase "Search Guests" as UC_SearchGuest
+    usecase "View Guest Details" as UC_ViewGuest
+    usecase "Update Guest Details" as UC_UpdateGuest
+    usecase "Delete Guest" as UC_DeleteGuest
+
+    ' --- Reservation Use Cases ---
+    usecase "Add New Reservation" as UC_AddReservation
+    usecase "View Reservation Details" as UC_ViewReservation
+    usecase "Update Reservation" as UC_UpdateReservation
+    usecase "Cancel Reservation" as UC_CancelReservation
+    usecase "Confirm Reservation" as UC_ConfirmReservation
+    usecase "Check-In Guest" as UC_CheckIn
+    usecase "Check-Out Guest" as UC_CheckOut
+    usecase "Check Room Availability" as UC_CheckAvail
+
+    ' --- Billing & Payment Use Cases ---
+    usecase "Calculate Bill" as UC_CalcBill
+    usecase "Process Payment" as UC_ProcessPayment
+    usecase "Print Bill / Receipt" as UC_PrintBill
+    usecase "Send Email Notification" as UC_SendEmail
+
+    ' --- Room Management Use Cases ---
+    usecase "Manage Rooms" as UC_ManageRooms
+    usecase "Add Room" as UC_AddRoom
+    usecase "Update Room" as UC_UpdateRoom
+    usecase "Delete Room" as UC_DeleteRoom
+    usecase "Toggle Room Maintenance" as UC_ToggleMaint
+
+    ' --- Reporting Use Cases ---
+    usecase "View Dashboard" as UC_Dashboard
+    usecase "Generate Monthly Report" as UC_MonthlyReport
+    usecase "Generate Weekly Report" as UC_WeeklyReport
+    usecase "Export Report to CSV" as UC_ExportCSV
+
+    ' --- Staff Management Use Cases ---
+    usecase "Manage Staff Accounts" as UC_ManageStaff
+    usecase "Create Staff Account" as UC_CreateStaff
+    usecase "Toggle Staff Active Status" as UC_ToggleStaff
+    usecase "Reset Staff Password" as UC_ResetStaffPass
+
+    ' --- Help ---
+    usecase "View Help Section" as UC_Help
+}
+
+' ============================================================
+' Actors
+' ============================================================
+actor "Staff" as Staff
+actor "Manager" as Manager
+actor "System\nAdministrator" as Admin
+actor "Email Service" as EmailSvc <<system>>
+
+' ============================================================
+' Inheritance among Actors
+' ============================================================
+Staff <|-- Manager
+Manager <|-- Admin
+
+' ============================================================
+' Staff Associations
+' ============================================================
+Staff --> UC_Login
+Staff --> UC_Logout
+Staff --> UC_ChangePass
+Staff --> UC_AddGuest
+Staff --> UC_SearchGuest
+Staff --> UC_ViewGuest
+Staff --> UC_UpdateGuest
+Staff --> UC_AddReservation
+Staff --> UC_ViewReservation
+Staff --> UC_UpdateReservation
+Staff --> UC_CancelReservation
+Staff --> UC_ConfirmReservation
+Staff --> UC_CheckIn
+Staff --> UC_CheckOut
+Staff --> UC_CalcBill
+Staff --> UC_ProcessPayment
+Staff --> UC_PrintBill
+Staff --> UC_Dashboard
+Staff --> UC_Help
+
+' ============================================================
+' Manager Associations (extends Staff)
+' ============================================================
+Manager --> UC_MonthlyReport
+Manager --> UC_WeeklyReport
+Manager --> UC_ExportCSV
+Manager --> UC_ManageRooms
+
+' ============================================================
+' Admin Associations (extends Manager)
+' ============================================================
+Admin --> UC_ManageStaff
+Admin --> UC_DeleteGuest
+Admin --> UC_DeleteRoom
+
+' ============================================================
+' System Actor Associations
+' ============================================================
+EmailSvc <-- UC_SendEmail
+
+' ============================================================
+' <<include>> Relationships
+' ============================================================
+UC_Login ..> UC_ValidateCreds : <<include>>
+UC_AddReservation ..> UC_CheckAvail : <<include>>
+UC_ProcessPayment ..> UC_CalcBill : <<include>>
+UC_CheckIn ..> UC_ViewReservation : <<include>>
+UC_CheckOut ..> UC_ViewReservation : <<include>>
+
+' ============================================================
+' <<extend>> Relationships
+' ============================================================
+UC_AddReservation <.. UC_SendEmail : <<extend>>
+UC_ConfirmReservation <.. UC_SendEmail : <<extend>>
+UC_ProcessPayment <.. UC_SendEmail : <<extend>>
+UC_ProcessPayment <.. UC_PrintBill : <<extend>>
+UC_ViewReservation <.. UC_CalcBill : <<extend>>
+UC_ManageRooms <.. UC_AddRoom : <<extend>>
+UC_ManageRooms <.. UC_UpdateRoom : <<extend>>
+UC_ManageRooms <.. UC_DeleteRoom : <<extend>>
+UC_ManageRooms <.. UC_ToggleMaint : <<extend>>
+UC_ManageStaff <.. UC_CreateStaff : <<extend>>
+UC_ManageStaff <.. UC_ToggleStaff : <<extend>>
+UC_ManageStaff <.. UC_ResetStaffPass : <<extend>>
+UC_MonthlyReport <.. UC_ExportCSV : <<extend>>
+
+@enduml
+
