@@ -100,7 +100,11 @@ public class PaymentServiceImpl implements PaymentService {
             paymentDAO.save(payment);
             log.info("processPayment: payment saved id={} amount={} method={} reservationId={}", payment.getId(), payment.getAmount(), method, reservationId);
 
-            // 7. Send payment receipt email to guest
+            // 7. Update reservation status to CONFIRMED after successful payment
+            reservationDAO.updateStatus(reservationId, "CONFIRMED");
+            log.info("processPayment: reservation {} status updated to CONFIRMED", reservationId);
+
+            // 8. Send payment receipt email to guest
             Guest guest = guestDAO.findById(r.getGuestId());
             if (guest != null && guest.getEmail() != null) {
                 log.debug("processPayment: sending receipt email to {}", guest.getEmail());
