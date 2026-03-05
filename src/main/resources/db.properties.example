@@ -1,5 +1,5 @@
 db.url=jdbc:mysql://localhost:3306/ocean_view_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-db.username=root
-db.password=root
+db.username=your_db_username
+db.password=your_db_password
 db.driver=com.mysql.cj.jdbc.Driver
 
