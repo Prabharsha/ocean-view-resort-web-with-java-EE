@@ -17,5 +17,9 @@ Thumbs.db
 # Docs folder (design documents, images, etc.)
 docs/
 
+# Sensitive application property files (use *.example templates instead)
+src/main/resources/db.properties
+src/main/resources/email.properties
+
 target/
 catalina.home_IS_UNDEFINED/
