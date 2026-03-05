@@ -17,3 +17,5 @@ Thumbs.db
 # Docs folder (design documents, images, etc.)
 docs/
 
+target/
+catalina.home_IS_UNDEFINED/
